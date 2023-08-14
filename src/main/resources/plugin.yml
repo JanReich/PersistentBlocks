@@ -1,0 +1,7 @@
+name: PersistentBlocks
+version: '${project.version}'
+main: minecraft.persistentblocks.PersistentBlocks
+api-version: '1.19'
+commands:
+  persistent:
+    description: test
