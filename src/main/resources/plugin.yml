@@ -2,6 +2,8 @@ name: PersistentBlocks
 version: '${project.version}'
 main: minecraft.persistentblocks.PersistentBlocks
 api-version: '1.19'
+authors:
+  - JanX_X
 commands:
   persistent:
-    description: test
+    description: counts the block with persistent data
