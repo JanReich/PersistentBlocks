@@ -101,9 +101,6 @@ public class PersistentBlockManager {
     }
 
     public void copyTo(final Block destinationBlock, final Block block) {
-        if (block.getPistonMoveReaction() == PistonMoveReaction.BREAK) {
-            return;
-        }
         getPersistentBlockContainer(block).getKeys().forEach(namespacedKey -> {
             PersistentDataType dataType = getDataType(block, namespacedKey);
             if (dataType == null)

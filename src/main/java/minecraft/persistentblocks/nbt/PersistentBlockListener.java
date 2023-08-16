@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.block.data.type.PistonHead;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -126,7 +127,9 @@ public class PersistentBlockListener implements Listener {
         });
 
         Utils.reverse(map).forEach((destinationBlock, block) -> {
-            persistentBlockManager.copyTo(destinationBlock, block);
+            if (block.getPistonMoveReaction() != PistonMoveReaction.BREAK) {
+                persistentBlockManager.copyTo(destinationBlock, block);
+            }
             persistentBlockManager.clear(block);
         });
     }
