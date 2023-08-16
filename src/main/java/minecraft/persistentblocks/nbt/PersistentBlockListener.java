@@ -132,8 +132,7 @@ public class PersistentBlockListener implements Listener {
     }
 
     //todo: gravitiy blocks - BlockPhysicsEvent (Not very performance friendly)
-    //todo: getPistonMoveReaktion, when moved by an piston, when the block break then the persistent data gets deleted
-    //event.getBlock().getPistonMoveReaction()
+    //todo: gravitiyblock - the upper sugarcanes dose not get deleted when the bottom one gets destroyd
 
     private void callAndRemove(final @NotNull Block block, final @NotNull Event bukkitEvent) {
         if (callEvent(block, bukkitEvent)) {

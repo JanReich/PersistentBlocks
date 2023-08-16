@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
@@ -100,6 +101,9 @@ public class PersistentBlockManager {
     }
 
     public void copyTo(final Block destinationBlock, final Block block) {
+        if (block.getPistonMoveReaction() == PistonMoveReaction.BREAK) {
+            return;
+        }
         getPersistentBlockContainer(block).getKeys().forEach(namespacedKey -> {
             PersistentDataType dataType = getDataType(block, namespacedKey);
             if (dataType == null)
