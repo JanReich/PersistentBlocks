@@ -2,10 +2,13 @@ package minecraft.persistentblocks.nbt;
 
 import minecraft.persistentblocks.nbt.events.PersistentBlockBreakEvent;
 import minecraft.persistentblocks.nbt.events.PersistentBlockMoveEvent;
+import minecraft.persistentblocks.util.Util;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.type.PistonHead;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -39,7 +42,12 @@ public class PersistentBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBreak(final BlockBreakEvent event) {
-        callAndRemove(event.getBlock(), event);
+        if (event.getBlock().getType() == Material.PISTON_HEAD) {
+            PistonHead pistonHead = (PistonHead) event.getBlock().getBlockData();
+            callAndRemove(Util.getPistonBase(event.getBlock(), pistonHead.getFacing()), event);
+        } else {
+            callAndRemove(event.getBlock(), event);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -82,8 +90,20 @@ public class PersistentBlockListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onTnt(final TNTPrimeEvent event) {
+        callAndRemove(event.getBlock(), event);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPiston(final BlockPistonExtendEvent event) {
         onPiston(event.getBlocks(), event);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onSculkSpread(final BlockSpreadEvent event) {
+        if(event.getNewState().getType() == Material.SCULK) {
+            callAndRemove(event.getBlock(), event);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -111,8 +131,9 @@ public class PersistentBlockListener implements Listener {
         });
     }
 
-    //todo: Scuk
-    //todo: gravitiy blocks
+    //todo: gravitiy blocks - BlockPhysicsEvent (Not very performance friendly)
+    //todo: getPistonMoveReaktion, when moved by an piston, when the block break then the persistent data gets deleted
+    //event.getBlock().getPistonMoveReaction()
 
     private void callAndRemove(final @NotNull Block block, final @NotNull Event bukkitEvent) {
         if (callEvent(block, bukkitEvent)) {

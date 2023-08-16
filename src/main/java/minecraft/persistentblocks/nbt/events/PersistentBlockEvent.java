@@ -54,6 +54,11 @@ public class PersistentBlockEvent extends Event implements Cancellable {
         return HANDLERS;
     }
 
+    @NotNull
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
     public  enum Reason {
         BLOCK_BREAK(BlockBreakEvent.class),
         BLOCK_PLACE(BlockPlaceEvent.class, BlockMultiPlaceEvent.class),
@@ -64,6 +69,8 @@ public class PersistentBlockEvent extends Event implements Cancellable {
         FADE(BlockFadeEvent.class),
         STRUCTURE_GROW(StructureGrowEvent.class),
         FERTILIZE(BlockFertilizeEvent.class),
+        TNT_PRIME(TNTPrimeEvent.class),
+        SCULK_SPREAD(BlockSpreadEvent.class),
         UNKNOWN((Class<? extends Event>) null);
 
         @NotNull

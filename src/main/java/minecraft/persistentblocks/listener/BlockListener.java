@@ -1,8 +1,8 @@
 package minecraft.persistentblocks.listener;
 
 import minecraft.persistentblocks.nbt.PersistentBlockManager;
+import minecraft.persistentblocks.nbt.events.PersistentBlockBreakEvent;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -28,14 +28,11 @@ public class BlockListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onBreak(final BlockBreakEvent event) {
-        Block block = event.getBlock();
-        if (!persistentBlockManager.hasPersistentBlockData(block))
+    public void onPersistentBreak(final PersistentBlockBreakEvent event) {
+        if (!(event.getBukkitEvent() instanceof BlockBreakEvent)) {
             return;
-        if (persistentBlockManager.get(block, namespacedKey, PersistentDataType.STRING)
-                .equalsIgnoreCase("placed")) {
-            //Todo: only do something, when the block was placed by the Player
-            event.getPlayer().sendMessage("Server: Warum baust du deine eigene Kreation ab?");
         }
+        BlockBreakEvent causedBy = (BlockBreakEvent) event.getBukkitEvent();
+        causedBy.getPlayer().sendMessage("Server: Warum baust du deine eigene Kreation ab?");
     }
 }
